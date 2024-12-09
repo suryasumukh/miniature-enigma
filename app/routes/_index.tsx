@@ -7,13 +7,13 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <main className="mx-auto flex flex-col h-dvh max-w-screen-md items-center">
-      <header className="text-center space-y-2">
+      <header className="text-center space-y-2 my-4">
         <h1 className="text-3xl font-bold ">Document QA</h1>
         <p>document question answering with OLlama</p>
       </header>
       <div
         id="chat-container"
-        className="grow my-2 p-2 relative w-full space-y-3 rounded-md border-2 flex flex-col"
+        className="grow m-4 p-2 relative w-full space-y-3 rounded-md border-2 flex flex-col"
       >
         <div
           id="chat-message-container"
