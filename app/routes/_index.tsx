@@ -8,8 +8,8 @@ export default function Index() {
   return (
     <main className="mx-auto flex flex-col h-dvh max-w-screen-md items-center">
       <header className="text-center space-y-2">
-        <h1 className="text-3xl font-bold ">Document Chat</h1>
-        <p>document question answering and chat</p>
+        <h1 className="text-3xl font-bold ">Document QA</h1>
+        <p>document question answering with OLlama</p>
       </header>
       <div
         id="chat-container"
