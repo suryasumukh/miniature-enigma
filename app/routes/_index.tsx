@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import ChatBubble from "~/components/ui/Chat/ChatBubble";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Document Chat" }];
@@ -6,26 +7,26 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
   return (
-    <main className="mx-auto flex flex-col h-dvh max-w-screen-md items-center">
-      <header className="text-center space-y-2 my-4">
-        <h1 className="text-3xl font-bold ">Document QA</h1>
+    <main className="mx-auto flex h-dvh max-w-screen-md flex-col items-center bg-neutral-50">
+      <header className="my-4 space-y-2 text-center">
+        <h1 className="text-3xl font-bold">Document QA</h1>
         <p>document question answering with OLlama</p>
       </header>
       <div
         id="chat-container"
-        className="grow m-4 p-2 relative w-full space-y-3 rounded-md border-2 flex flex-col"
+        className="flex w-full grow flex-col space-y-2 rounded-md p-2"
       >
         <div
           id="chat-message-container"
-          className="overflow-y-auto grow basis-0 space-y-2"
+          className="grow basis-0 space-y-4 overflow-y-auto"
         >
           {Array.from({ length: 100 }, (val, idx) => idx).map((_, index) => (
-            <p key={index} id="chat-message" className="border rounded-md px-2">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempora
-              aliquam animi dolorem quae vitae quaerat, incidunt reprehenderit
-              sunt veritatis iste ad voluptatibus unde obcaecati velit in ipsam
-              debitis quidem! Velit.
-            </p>
+            <ChatBubble
+              key={index}
+              message={
+                "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci numquam consequuntur voluptate, delectus nihil. Exercitationem impedit rerum porro laudantium ea, repudiandae obcaecati tempore mollitia, autem temporibus atque adipisci esse?"
+              }
+            />
           ))}
         </div>
         <textarea
