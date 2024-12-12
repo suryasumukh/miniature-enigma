@@ -6,7 +6,7 @@ const ChatBubble = ({ message }: { message: string }) => {
   return (
     <div
       id="chat-message"
-      className="group/chatbubble rounded-md bg-neutral-100 p-2"
+      className="group/chatbubble rounded-lg bg-neutral-100 p-2"
     >
       <div className="flex items-center gap-2">
         <Avatar.Root className="inline-flex size-8 items-center justify-center overflow-hidden rounded-full bg-neutral-50 align-middle">
