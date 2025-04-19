@@ -11,15 +11,18 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@ai-sdk/google": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-scroll-area": "^1.2.1",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.0",
     "@remix-run/serve": "^2.15.0",
+    "ai": "^4.3.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "isbot": "^4.1.0",
     "lucide-react": "^0.468.0",
+    "ollama-ai-provider": "^1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.5.5"
