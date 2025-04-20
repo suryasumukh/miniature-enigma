@@ -45,7 +45,7 @@ export default function Index() {
       </header>
       <div
         id="chat-container"
-        className="flex w-full grow flex-col space-y-2 rounded-md border bg-white p-2"
+        className="flex w-full grow flex-col space-y-1 rounded-md border bg-white p-2"
       >
         <div
           id="chat-thread"
@@ -65,7 +65,16 @@ export default function Index() {
             </div>
           ))}
         </div>
-        <p className="text-sm font-light">{status}</p>
+        <div className="flex items-center justify-start gap-2">
+          <div
+            className={cx("size-4 rounded-full border-2", {
+              "animate-spin border-t-neutral-800": isStreaming,
+              "border-green-300": status === "ready",
+              "border-red-300": status === "error",
+            })}
+          ></div>
+          <span className="text-sm font-extralight">{status}</span>
+        </div>
         <fetcher.Form method="POST" onSubmit={handleSubmit}>
           <div className="relative">
             <textarea
