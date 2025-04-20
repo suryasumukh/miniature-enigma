@@ -1,97 +1,56 @@
-import type { ActionFunctionArgs, MetaFunction } from "@remix-run/node";
-import ChatBubble from "~/components/ui/Chat/ChatBubble";
-import * as ScrollArea from "@radix-ui/react-scroll-area";
+import type { MetaFunction } from "@remix-run/node";
 import { useFetcher } from "@remix-run/react";
-import { useEffect, useRef, useState } from "react";
+import { useChat } from "@ai-sdk/react";
+import * as React from "react";
+import { cx } from "~/utils/cx";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Document Chat" }];
-};
-
-export const action = async ({ request }: ActionFunctionArgs) => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  const formData = await request.formData();
-  console.log("Received ==>", formData);
-  return {
-    completion: "hello from Ollama" + ` at ${new Date().toISOString()}`,
-  };
+  return [{ title: "LLM Client" }];
 };
 
 export default function Index() {
-  // const queryCompletion = useActionData<typeof action>();
-  const [messages, setMessages] = useState<string[]>([]);
-  const formRef = useRef<HTMLFormElement | null>(null);
-
-  const eomRef = useRef<HTMLDivElement | null>(null);
-
-  const fetcher = useFetcher<typeof action>();
-  const queryCompletion = fetcher.data?.completion;
-  const query = fetcher.formData?.get("query");
-  const isSubmitting = fetcher.state === "submitting";
-
-  useEffect(() => {
-    if (queryCompletion) {
-      setMessages((prev) => [...prev, queryCompletion]);
-    }
-  }, [queryCompletion]);
-
-  useEffect(() => {
-    if (isSubmitting) {
-      formRef.current?.reset();
-    }
-    if (query) {
-      setMessages((prev) => [...prev, query.toString()]);
-    }
-  }, [isSubmitting]);
-
-  useEffect(() => {
-    eomRef.current?.scrollIntoView();
-  }, [messages]);
+  const { messages, input, status, handleInputChange, handleSubmit } =
+    useChat();
+  const eomRef = React.useRef<HTMLDivElement | null>(null);
+  const fetcher = useFetcher();
 
   return (
     <main className="mx-auto flex h-dvh max-w-screen-md flex-col items-center bg-neutral-50">
-      <header className="my-4 space-y-2 text-center">
-        <h1 className="text-3xl font-bold">Document QA</h1>
-        <p>document question answering with OLlama</p>
+      <header className="my-2 text-center">
+        <h1 className="text-xl font-bold">LLM Chat Client</h1>
       </header>
       <div
         id="chat-container"
-        className="flex w-full grow flex-col space-y-2 rounded-md p-2"
+        className="flex w-full grow flex-col space-y-2 rounded-md border bg-white p-2"
       >
-        {/* <div
-          id="chat-message-container"
-          className="grow basis-0 space-y-4 overflow-y-auto"
+        <div
+          id="chat-thread"
+          className="flex grow basis-0 flex-col space-y-2 text-sm"
+          ref={eomRef}
         >
-          {Array.from({ length: 100 }, (val, idx) => idx).map((_, index) => (
-            <ChatBubble
-              key={index}
-              message={
-                "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae adipisci numquam consequuntur voluptate, delectus nihil. Exercitationem impedit rerum porro laudantium ea, repudiandae obcaecati tempore mollitia, autem temporibus atque adipisci esse?"
-              }
-            />
-          ))}
-        </div> */}
-        <ScrollArea.Root className="grow basis-0 overflow-hidden rounded-lg">
-          <ScrollArea.Viewport className="size-full">
-            <div className="space-y-4" id="messages-container">
-              {messages.map((message, index) => (
-                <ChatBubble key={index} message={message} />
-              ))}
-              <div ref={eomRef}></div>
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={cx("space-y-2 rounded-md p-2 text-sm", {
+                "max-w-[80%] self-end overflow-hidden text-wrap bg-neutral-100 text-right":
+                  message.role === "user",
+                "text-left": message.role === "assistant",
+              })}
+            >
+              <p>{message.content}</p>
             </div>
-          </ScrollArea.Viewport>
-          <ScrollArea.Scrollbar orientation="vertical">
-            <ScrollArea.Thumb />
-          </ScrollArea.Scrollbar>
-        </ScrollArea.Root>
-        <fetcher.Form method="post" ref={formRef}>
+          ))}
+        </div>
+        <p className="text-sm font-light">{status}</p>
+        <fetcher.Form method="POST" onSubmit={handleSubmit}>
           <input
             type="text"
             id="query"
-            className="w-full rounded-md border p-2"
+            className="w-full rounded-md border p-2 text-sm"
             name="query"
             placeholder="send a query ..."
-            defaultValue={""}
+            value={input}
+            onChange={handleInputChange}
           ></input>
         </fetcher.Form>
       </div>
